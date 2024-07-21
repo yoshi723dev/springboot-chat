@@ -7,13 +7,13 @@ import lombok.ToString;
 
 @Data
 @ToString
-public class GetFrendResponse {
+public class GetFriendResponse {
 	
-	@JsonProperty("frends")
-	private Frends[] frends;
+	@JsonProperty("friends")
+	private Friends[] friends;
 
 	@Data
-	public class Frends {
+	public class Friends {
 		@JsonProperty("user_id")
 		private int user_id;
 		

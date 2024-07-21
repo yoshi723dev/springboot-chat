@@ -5,13 +5,13 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.springboot.chat.entity.TFrend;
+import com.springboot.chat.entity.TFriend;
 
 @Mapper
-public interface TFrendMapper {
+public interface TFriendMapper {
 
-	List<TFrend> find(@Param("user_id") int user_id);
+	List<TFriend> find(@Param("user_id") int user_id);
 
-	int insert(TFrend tFrend);
+	int insert(TFriend tFrend);
 
 }

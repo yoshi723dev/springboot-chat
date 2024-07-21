@@ -20,7 +20,7 @@ public class TChatLog implements Serializable {
 
 	@Id
     @Column(name="CHAT_GROUP_ID")
-	private String chat_group_id;
+	private int chat_group_id;
 	
 	@Id
     @Column(name="CHAT_DATE")

@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.springboot.chat.controller.model.GetFrendResponse;
-import com.springboot.chat.controller.model.GetFrendResponse.Frends;
+import com.springboot.chat.controller.model.GetFriendResponse;
+import com.springboot.chat.controller.model.GetFriendResponse.Friends;
 import com.springboot.chat.controller.model.LoginRequest;
 import com.springboot.chat.entity.MUser;
-import com.springboot.chat.entity.TFrend;
+import com.springboot.chat.entity.TFriend;
 import com.springboot.chat.mapper.MUserMapper;
-import com.springboot.chat.mapper.TFrendMapper;
+import com.springboot.chat.mapper.TFriendMapper;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -27,7 +27,7 @@ public class UserController {
 	private HttpSession session;
 	
 	@Autowired
-	private TFrendMapper frendMapper;
+	private TFriendMapper friendMapper;
 	
 	@Autowired
 	private MUserMapper userMapper;
@@ -42,19 +42,19 @@ public class UserController {
 		return false;
 	}
 	
-	@GetMapping(path="/get_frend")
-	public GetFrendResponse getFrendList(int user_id) {
-		List<TFrend> tFrend = frendMapper.find(user_id);
-		GetFrendResponse response = new GetFrendResponse();
-		Frends[] listFrends = new Frends[tFrend.size()];
-		for (int i=0; i<tFrend.size(); i++) {
-			Frends frends = response.new Frends();
-			MUser user = userMapper.findOne(tFrend.get(i).getFrend_user_id());
+	@GetMapping(path="/get_friend")
+	public GetFriendResponse getFrendList(int user_id) {
+		List<TFriend> tFriend = friendMapper.find(user_id);
+		GetFriendResponse response = new GetFriendResponse();
+		Friends[] listFrends = new Friends[tFriend.size()];
+		for (int i=0; i<tFriend.size(); i++) {
+			Friends frends = response.new Friends();
+			MUser user = userMapper.findOne(tFriend.get(i).getFriend_user_id());
 			frends.setUser_id(user.getUser_id());
 			frends.setUser_nm(user.getUser_nm());
 			listFrends[i] = frends;
 		}
-		response.setFrends(listFrends);
+		response.setFriends(listFrends);
 		return response;
 	}
 	

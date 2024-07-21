@@ -13,15 +13,15 @@ import lombok.Data;
 @Entity
 @Data
 @Component
-public class TFrend implements Serializable {
+public class TFriend implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
     @Column(name="USER_ID")
 	private int user_id;
 
-    @Column(name="FREND_USER_ID")
-	private int frend_user_id;
+    @Column(name="FRIEND_USER_ID")
+	private int friend_user_id;
     
     @Column(name="REGIST_DATE")
 	private Date regist_date;
