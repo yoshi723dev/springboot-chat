@@ -17,10 +17,15 @@ import com.springboot.chat.entity.TFrend;
 import com.springboot.chat.mapper.MUserMapper;
 import com.springboot.chat.mapper.TFrendMapper;
 
+import jakarta.servlet.http.HttpSession;
+
 @RestController
 @RequestMapping("/")
 public class UserController {
 
+	@Autowired
+	private HttpSession session;
+	
 	@Autowired
 	private TFrendMapper frendMapper;
 	
@@ -31,6 +36,7 @@ public class UserController {
 	public boolean login(LoginRequest login) {
 		MUser mUser = userMapper.findOne(login.getUser_id());
 		if (mUser.getPassword().equals(login.getPassword())) {
+			session.setAttribute("user", mUser);
 			return true;
 		}
 		return false;
