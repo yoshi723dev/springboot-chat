@@ -10,11 +10,16 @@
 		where a.USER_ID = #{user_id}
 		and b.USER_ID = #{friend_user_id}
 	</select>
+    <select id="findMax" resultType="_int">
+		select
+			max(CHAT_GROUP_ID) as max
+		from T_CHAT_GROUP
+	</select>
 	<insert id="insert">
 		insert into T_CHAT_GROUP (CHAT_GROUP_ID, USER_ID)
 		values(
-			 #{form.chat_group_id}
-			,#{form.user_id}
+		    #{form.chat_group_id}
+		   ,#{form.user_id}
 		)
 	</insert>
 </mapper>

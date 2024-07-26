@@ -15,9 +15,9 @@ public class GetFriendResponse {
 	@Data
 	public class Friends {
 		@JsonProperty("user_id")
-		private int user_id;
+		private int userId;
 		
 		@JsonProperty("user_nm")
-		private String user_nm;
+		private String userNm;
 	}
 }

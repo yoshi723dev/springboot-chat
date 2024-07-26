@@ -1,18 +1,18 @@
 package com.springboot.chat.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.chat.controller.model.ChatLogResponse;
-import com.springboot.chat.controller.model.ChatLogResponse.Chats;
+import com.springboot.chat.controller.model.ChatLogResponse.ChatLog;
+import com.springboot.chat.controller.model.GetChatLogRequest;
+import com.springboot.chat.controller.model.RegistChatLogRequest;
 import com.springboot.chat.entity.MUser;
-import com.springboot.chat.entity.TChatLog;
-import com.springboot.chat.mapper.TChatGroupMapper;
-import com.springboot.chat.mapper.TChatLogMapper;
+import com.springboot.chat.logic.ChatLogic;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -24,29 +24,33 @@ public class ChatController {
 	private HttpSession session;
 	
 	@Autowired
-	private TChatLogMapper chatLogMapper;
+	private ChatLogic chatLogic;
 	
-	@Autowired
-	private TChatGroupMapper chatGroupMapper;
-	
-	@GetMapping( path="/get_chatlog")
-	public ChatLogResponse getChatLog(int friend_user_id) {
+	@PostMapping( path="/get_chatlog", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ChatLogResponse getChatLog(@RequestBody GetChatLogRequest request) {
+		// セッションからユーザ情報を取得
 		MUser mUser = (MUser) session.getAttribute("user");
-		int chatGroupId = chatGroupMapper.findChatGroup(mUser.getUser_id(), friend_user_id);
-		List<TChatLog> listChat = chatLogMapper.findOrder(chatGroupId);
+		
+		// 画面から受け取ったchatgroupidが存在するか、存在しない場合新規採番
+		int newChatGroupId = chatLogic.checkChatGroupId(request.getChatGroupId(), mUser.getUserId(), request.getFrendUserIds());
+		
+		// チャットログ取得
+		ChatLog[] aryChats = chatLogic.getChatLog(newChatGroupId);
 		ChatLogResponse response = new ChatLogResponse();
-		Chats[] listChats = new Chats[listChat.size()];
-		for (int i=0; i<listChat.size(); i++) {
-			Chats chats = response.new Chats();
-			chats.setUser_id(listChat.get(i).getUser_id());
-			chats.setChat_date(listChat.get(i).getChat_date());
-			chats.setComment(listChat.get(i).getComment());
-			listChats[i] = chats;
-		}
-		response.setChats(listChats);
+		response.setChatGroupId(newChatGroupId);
+		response.setChatLog(aryChats);
 		
 		return response;
 	}
 	
-	//registChatLog
+	@PostMapping( path="/regist_chatlog", produces = MediaType.APPLICATION_JSON_VALUE)
+	public void registChatLog(@RequestBody RegistChatLogRequest request) {
+		// セッションからユーザ情報を取得
+		MUser mUser = (MUser) session.getAttribute("user");
+		
+		// 画面から受け取ったchatgroupidが存在するか、存在しない場合新規採番
+		int newChatGroupId = chatLogic.checkChatGroupId(request.getChatGroupId(), mUser.getUserId(), null);
+		
+		chatLogic.setChatLog(newChatGroupId, mUser.getUserId(), request.getMessage());
+	}
 }

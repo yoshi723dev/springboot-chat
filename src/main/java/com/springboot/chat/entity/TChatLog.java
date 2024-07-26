@@ -20,21 +20,21 @@ public class TChatLog implements Serializable {
 
 	@Id
     @Column(name="CHAT_GROUP_ID")
-	private int chat_group_id;
+	private int chatGroupId;
 	
 	@Id
     @Column(name="CHAT_DATE")
-	private Date chat_date;
+	private Date chatDate;
 
     @Column(name="USER_ID")
-	private int user_id;
+	private int userId;
 
     @Column(name="COMMENT")
 	private String comment;
 
     @Column(name="DELETE_FLG")
-	private String delete_flg;
+	private String deleteFlg;
 
     @Column(name="TIME_STAMP")
-	private Date time_stamp;
+	private Date timeStamp;
 }

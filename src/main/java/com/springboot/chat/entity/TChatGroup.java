@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 import org.springframework.stereotype.Component;
 
@@ -13,18 +14,16 @@ import lombok.Data;
 @Entity
 @Data
 @Component
-public class TFriend implements Serializable {
+public class TChatGroup implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Id
+    @Column(name="CHAT_GROUP_ID")
+	private int chatGroupId;
+	
     @Column(name="USER_ID")
 	private int userId;
-
-    @Column(name="FRIEND_USER_ID")
-	private int friendUserId;
-    
-    @Column(name="REGIST_DATE")
-	private Date registDate;
 
     @Column(name="DELETE_FLG")
 	private String deleteFlg;

@@ -8,7 +8,7 @@ import com.springboot.chat.entity.MUser;
 @Mapper
 public interface MUserMapper {
 
-    MUser findOne(@Param("user_id") int user_id);
+    MUser find(@Param("user_id") int userId);
 
 	int insert(MUser mUser);
 

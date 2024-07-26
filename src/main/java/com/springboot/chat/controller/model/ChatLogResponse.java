@@ -11,11 +11,14 @@ import lombok.ToString;
 @ToString
 public class ChatLogResponse {
 	
-	@JsonProperty("chats")
-	private Chats[] chats;
+	@JsonProperty("chat_group_id")
+	private int chatGroupId;
+	
+	@JsonProperty("chatLog")
+	private ChatLog[] chatLog;
 
 	@Data
-	public class Chats {
+	public class ChatLog {
 		@JsonProperty("user_id")
 		private int user_id;
 		
