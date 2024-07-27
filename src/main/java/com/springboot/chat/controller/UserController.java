@@ -39,6 +39,9 @@ public class UserController {
 	
 	@PostMapping( path="/login")
 	public String login(@RequestBody LoginRequest request) {
+		// 一度セッションを削除する
+		session.removeAttribute("user");
+		
 		MUser mUser = userMapper.find(request.getUserId());
 		if (mUser == null) {
 			return "NG";

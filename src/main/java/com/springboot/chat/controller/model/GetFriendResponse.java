@@ -7,7 +7,7 @@ import lombok.ToString;
 
 @Data
 @ToString
-public class GetFriendResponse {
+public class GetFriendResponse extends AbstractResponse {
 	
 	@JsonProperty("friends")
 	private Friends[] friends;

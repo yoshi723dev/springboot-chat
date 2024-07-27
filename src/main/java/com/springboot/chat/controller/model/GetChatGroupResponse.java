@@ -7,7 +7,7 @@ import lombok.ToString;
 
 @Data
 @ToString
-public class GetChatGroupResponse {
+public class GetChatGroupResponse extends AbstractResponse {
 
 	@JsonProperty("list_chat_group") 
 	private ChatGroup[] listChatGroup;

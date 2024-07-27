@@ -1,7 +1,6 @@
 package com.springboot.chat.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +13,7 @@ import com.springboot.chat.controller.model.GetChatGroupResponse;
 import com.springboot.chat.controller.model.GetChatGroupResponse.ChatGroup;
 import com.springboot.chat.controller.model.GetChatLogRequest;
 import com.springboot.chat.controller.model.RegistChatLogRequest;
+import com.springboot.chat.controller.model.RegistChatLogResponse;
 import com.springboot.chat.entity.MUser;
 import com.springboot.chat.logic.ChatLogic;
 
@@ -29,7 +29,7 @@ public class ChatController {
 	@Autowired
 	private ChatLogic chatLogic;
 	
-	@GetMapping( path="/get_chatgrouplist")
+	@GetMapping(path="/get_chatgrouplist")
 	public GetChatGroupResponse getChatGroupList() {
 		// セッションからユーザ情報を取得
 		MUser mUser = (MUser) session.getAttribute("user");
@@ -42,7 +42,7 @@ public class ChatController {
 		return response;
 	}
 	
-	@PostMapping( path="/redirect_chat")
+	@PostMapping(path="/redirect_chat")
 	public String redirectChat(@RequestBody GetChatLogRequest request) {
 		// セッションにリクエスト情報退避
 		session.setAttribute("chatinfo", request);
@@ -50,7 +50,7 @@ public class ChatController {
 		return "chat.html";
 	}
 	
-	@GetMapping( path="/get_chatlog")
+	@GetMapping(path="/get_chatlog")
 	public ChatLogResponse getChatLog() throws Exception {
 		// セッションからユーザ情報を取得
 		MUser mUser = (MUser) session.getAttribute("user");
@@ -76,8 +76,8 @@ public class ChatController {
 		return response;
 	}
 	
-	@PostMapping( path="/regist_chatlog", produces = MediaType.APPLICATION_JSON_VALUE)
-	public String registChatLog(@RequestBody RegistChatLogRequest request) {
+	@PostMapping(path="/regist_chatlog")
+	public RegistChatLogResponse registChatLog(@RequestBody RegistChatLogRequest request) {
 		// セッションからユーザ情報を取得
 		MUser mUser = (MUser) session.getAttribute("user");
 		
@@ -86,6 +86,6 @@ public class ChatController {
 		
 		chatLogic.setChatLog(newChatGroupId, mUser.getUser_id(), request.getMessage());
 		
-		return "OK";
+		return new RegistChatLogResponse();
 	}
 }

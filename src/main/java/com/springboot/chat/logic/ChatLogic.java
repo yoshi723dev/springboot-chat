@@ -61,7 +61,6 @@ public class ChatLogic {
 	@Transactional
 	public int checkChatGroupId(int chatGroupId, int userId, String friendUserIds) {
 		int newChatGroupId = chatGroupId;
-		int[] intFriendUserIds = Stream.of(friendUserIds.split(",")).mapToInt(Integer::parseInt).toArray();
 		try {
 			// 画面から受け取ったchatgroupidが存在するか
 			List<TChatGroup> listTChatGroup = chatGroupMapper.find(chatGroupId);
@@ -76,6 +75,7 @@ public class ChatLogic {
 			}
 			// friendUserIdが指定されている場合、他社のレコードも登録する
 			if (friendUserIds != null) {
+				int[] intFriendUserIds = Stream.of(friendUserIds.split(",")).mapToInt(Integer::parseInt).toArray();
 				for (int i=0; i<intFriendUserIds.length; i++) {
 					TChatGroup tChatGroup = chatGroupMapper.findUserId(chatGroupId, intFriendUserIds[i]);
 					if (tChatGroup == null) {

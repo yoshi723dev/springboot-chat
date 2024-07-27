@@ -9,7 +9,7 @@ import lombok.ToString;
 
 @Data
 @ToString
-public class ChatLogResponse {
+public class ChatLogResponse extends AbstractResponse {
 	
 	@JsonProperty("chat_group_id")
 	private int chatGroupId;

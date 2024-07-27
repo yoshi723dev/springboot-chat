@@ -15,11 +15,11 @@ public class LoginAspect {
 	@Autowired
 	private HttpSession session;
 	
-	// 動いてない
-    @Before("execution(* com.springboot.chat.controller.*(..))")
+	//execution(戻り値の型 パッケージ名.クラス名.関数名(引数))
+    @Before("execution(* com.springboot.chat.controller.*.*(..))")
     public void beforeMethod(JoinPoint joinPoint) throws Exception {
-    	System.out.println(joinPoint.getSignature().getName());
-    	if ("com.springboot.chat.controller.UserController.login".equals(joinPoint.getSignature().getName())) {
+    	String noTarget = joinPoint.getTarget().getClass().getSimpleName() + "." + joinPoint.getSignature().getName();
+    	if ("UserController.login".equals(noTarget)) {
     		return;
     	}
     	
