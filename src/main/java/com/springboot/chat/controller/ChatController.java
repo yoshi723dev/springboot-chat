@@ -2,6 +2,7 @@ package com.springboot.chat.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.chat.controller.model.ChatLogResponse;
 import com.springboot.chat.controller.model.ChatLogResponse.ChatLog;
+import com.springboot.chat.controller.model.GetChatGroupResponse;
+import com.springboot.chat.controller.model.GetChatGroupResponse.ChatGroup;
 import com.springboot.chat.controller.model.GetChatLogRequest;
 import com.springboot.chat.controller.model.RegistChatLogRequest;
 import com.springboot.chat.entity.MUser;
@@ -26,7 +29,20 @@ public class ChatController {
 	@Autowired
 	private ChatLogic chatLogic;
 	
-	@PostMapping( path="/get_chatlog", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping( path="/get_chatgrouplist")
+	public GetChatGroupResponse getChatGroupList() {
+		// セッションからユーザ情報を取得
+		MUser mUser = (MUser) session.getAttribute("user");
+		
+		// 画面から受け取ったchatgroupidが存在するか、存在しない場合新規採番
+		ChatGroup[] aryChatGroup = chatLogic.getChatGroupList(mUser.getUser_id());
+		
+		GetChatGroupResponse response = new GetChatGroupResponse();
+		response.setListChatGroup(aryChatGroup);
+		return response;
+	}
+	
+	@PostMapping( path="/get_chatlog")
 	public ChatLogResponse getChatLog(@RequestBody GetChatLogRequest request) {
 		// セッションからユーザ情報を取得
 		MUser mUser = (MUser) session.getAttribute("user");

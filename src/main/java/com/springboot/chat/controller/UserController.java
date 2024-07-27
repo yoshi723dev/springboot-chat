@@ -40,6 +40,9 @@ public class UserController {
 	@PostMapping( path="/login")
 	public String login(@RequestBody LoginRequest request) {
 		MUser mUser = userMapper.find(request.getUserId());
+		if (mUser == null) {
+			return "NG";
+		}
 		if (mUser.getPassword().equals(request.getPassword())) {
 			session.setAttribute("user", mUser);
 			return "OK";

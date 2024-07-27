@@ -20,7 +20,7 @@ public class TChatGroup implements Serializable {
 
 	@Id
     @Column(name="CHAT_GROUP_ID")
-	private int chat_groupId;
+	private int chat_group_id;
 	
     @Column(name="USER_ID")
 	private int user_id;
