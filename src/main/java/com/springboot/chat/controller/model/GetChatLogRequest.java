@@ -12,6 +12,6 @@ public class GetChatLogRequest {
 	@JsonProperty("chat_group_id") 
 	private int chatGroupId;
 
-	@JsonProperty("frend_user_ids") 
-	private int[] frendUserIds;
+	@JsonProperty("friend_user_ids") 
+	private String friendUserIds;
 }

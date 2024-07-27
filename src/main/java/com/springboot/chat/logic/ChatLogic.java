@@ -1,6 +1,7 @@
 package com.springboot.chat.logic;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -36,24 +37,31 @@ public class ChatLogic {
 			String chatName = "";
 			String delimiter = "";
 			List<TChatGroup> listTChatGroupByGroupId = chatGroupMapper.find(listChatGroupByUserId.get(i).getChat_group_id());
-			for (TChatGroup tChatGroup : listTChatGroupByGroupId) {
-				MUser mUser = mUserMapper.find(tChatGroup.getUser_id());
+			int[] friendIds = new int[listTChatGroupByGroupId.size()];
+			for (int z=0; z<listTChatGroupByGroupId.size(); z++) {
+				if (userId == listTChatGroupByGroupId.get(z).getUser_id()) {
+					continue;
+				}
+				MUser mUser = mUserMapper.find(listTChatGroupByGroupId.get(z).getUser_id());
 				chatName += delimiter + mUser.getUser_nm();
 				delimiter = "と";
+				friendIds[z] = mUser.getUser_id();
 			}
 			chatName += "の会話";
 			
 			ChatGroup chatGroup = new GetChatGroupResponse().new ChatGroup();
 			chatGroup.setChatGroupId(listChatGroupByUserId.get(i).getChat_group_id());
 			chatGroup.setChatName(chatName);
+			chatGroup.setFriend_user_ids(friendIds);
 			aryChatGroup[i] = chatGroup;
 		}
 		return aryChatGroup;
 	}
 	
 	@Transactional
-	public int checkChatGroupId(int chatGroupId, int userId, int[] friendUserIds) {
+	public int checkChatGroupId(int chatGroupId, int userId, String friendUserIds) {
 		int newChatGroupId = chatGroupId;
+		int[] intFriendUserIds = Stream.of(friendUserIds.split(",")).mapToInt(Integer::parseInt).toArray();
 		try {
 			// 画面から受け取ったchatgroupidが存在するか
 			List<TChatGroup> listTChatGroup = chatGroupMapper.find(chatGroupId);
@@ -68,10 +76,10 @@ public class ChatLogic {
 			}
 			// friendUserIdが指定されている場合、他社のレコードも登録する
 			if (friendUserIds != null) {
-				for (int i=0; i<friendUserIds.length; i++) {
-					TChatGroup tChatGroup = chatGroupMapper.findUserId(chatGroupId, friendUserIds[i]);
+				for (int i=0; i<intFriendUserIds.length; i++) {
+					TChatGroup tChatGroup = chatGroupMapper.findUserId(chatGroupId, intFriendUserIds[i]);
 					if (tChatGroup == null) {
-						chatGroupMapper.insert(chatGroupId, friendUserIds[i]);
+						chatGroupMapper.insert(chatGroupId, intFriendUserIds[i]);
 					}
 				}
 			}

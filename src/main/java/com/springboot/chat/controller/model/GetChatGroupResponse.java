@@ -19,5 +19,8 @@ public class GetChatGroupResponse {
 		
 		@JsonProperty("chat_name") 
 		private String chatName;
+		
+		@JsonProperty("friend_user_ids") 
+		private int[] friend_user_ids;
 	}
 }

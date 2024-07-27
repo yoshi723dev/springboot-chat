@@ -42,19 +42,36 @@ public class ChatController {
 		return response;
 	}
 	
-	@PostMapping( path="/get_chatlog")
-	public ChatLogResponse getChatLog(@RequestBody GetChatLogRequest request) {
+	@PostMapping( path="/redirect_chat")
+	public String redirectChat(@RequestBody GetChatLogRequest request) {
+		// セッションにリクエスト情報退避
+		session.setAttribute("chatinfo", request);
+
+		return "chat.html";
+	}
+	
+	@GetMapping( path="/get_chatlog")
+	public ChatLogResponse getChatLog() throws Exception {
 		// セッションからユーザ情報を取得
 		MUser mUser = (MUser) session.getAttribute("user");
 		
+		// セッションから値を取得
+		if (session.getAttribute("chatinfo") == null) {
+			throw new Exception("no session");
+		}
+		GetChatLogRequest request = (GetChatLogRequest) session.getAttribute("chatinfo");
+		
 		// 画面から受け取ったchatgroupidが存在するか、存在しない場合新規採番
-		int newChatGroupId = chatLogic.checkChatGroupId(request.getChatGroupId(), mUser.getUser_id(), request.getFrendUserIds());
+		int newChatGroupId = chatLogic.checkChatGroupId(request.getChatGroupId(), mUser.getUser_id(), request.getFriendUserIds());
 		
 		// チャットログ取得
 		ChatLog[] aryChats = chatLogic.getChatLog(newChatGroupId);
 		ChatLogResponse response = new ChatLogResponse();
 		response.setChatGroupId(newChatGroupId);
 		response.setChatLog(aryChats);
+		
+		// セッションクリア
+		session.removeAttribute("chatinfo");
 		
 		return response;
 	}
