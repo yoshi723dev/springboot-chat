@@ -20,14 +20,14 @@ public class TChatGroup implements Serializable {
 
 	@Id
     @Column(name="CHAT_GROUP_ID")
-	private int chatGroupId;
+	private int chat_groupId;
 	
     @Column(name="USER_ID")
-	private int userId;
+	private int user_id;
 
     @Column(name="DELETE_FLG")
-	private String deleteFlg;
+	private String delete_flg;
 
     @Column(name="TIME_STAMP")
-	private Date timeStamp;
+	private Date time_stamp;
 }

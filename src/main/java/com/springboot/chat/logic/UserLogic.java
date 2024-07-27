@@ -23,18 +23,19 @@ public class UserLogic {
 			List<TFriend> listFriend = friendMapper.find(userId);
 			Map<Integer, TFriend> mapFriend = new HashMap<>();
 			for (TFriend tFriend : listFriend) {
-				mapFriend.put(tFriend.getFriendUserId(), tFriend);
+				mapFriend.put(tFriend.getFriend_user_id(), tFriend);
 			}
 
 			for (int i=0; i<friendUserIds.length; i++) {
 				if (! mapFriend.containsKey(friendUserIds[i])) {
 					TFriend tFriend = new TFriend();
-					tFriend.setUserId(userId);
-					tFriend.setFriendUserId(friendUserIds[i]);
+					tFriend.setUser_id(userId);
+					tFriend.setFriend_user_id(friendUserIds[i]);
 					friendMapper.insert(tFriend);
 				}
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw e;
 		}
 	}

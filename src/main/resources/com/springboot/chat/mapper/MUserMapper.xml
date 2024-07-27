@@ -10,9 +10,9 @@
 	<insert id="insert">
 		insert into M_USER (USER_ID, USER_NM, PASSWORD)
 		values(
-			 #{form.user_id}
-			,#{form.user_nm}
-			,#{form.password}
+			 #{user_id}
+			,#{user_nm}
+			,#{password}
 		)
 	</insert>
 </mapper>

@@ -52,27 +52,27 @@ public class UserController {
 		// セッションからユーザ情報を取得
 		MUser mUser = (MUser) session.getAttribute("user");
 		
-		List<TFriend> tFriend = friendMapper.find(mUser.getUserId());
+		List<TFriend> tFriend = friendMapper.find(mUser.getUser_id());
 		GetFriendResponse response = new GetFriendResponse();
 		Friends[] listFriends = new Friends[tFriend.size()];
 		for (int i=0; i<tFriend.size(); i++) {
 			Friends friends = response.new Friends();
-			MUser user = userMapper.find(tFriend.get(i).getFriendUserId());
-			friends.setUserId(user.getUserId());
-			friends.setUserNm(user.getUserNm());
+			MUser user = userMapper.find(tFriend.get(i).getFriend_user_id());
+			friends.setUserId(user.getUser_id());
+			friends.setUserNm(user.getUser_nm());
 			listFriends[i] = friends;
 		}
 		response.setFriends(listFriends);
 		return response;
 	}
 	
-	@PostMapping( path="/regist_friend")
+	@PostMapping(path="/regist_friend")
 	public String registFriend(@RequestBody RegistFriendRequest request) {
 		// セッションからユーザ情報を取得
 		MUser mUser = (MUser) session.getAttribute("user");
 		
 		try {
-			userLogic.registFriend(mUser.getUserId(), request.getFriendIds());
+			userLogic.registFriend(mUser.getUser_id(), request.getFriendIds());
 			return "OK";
 		} catch(Exception e) {
 			System.out.println(e.getMessage());

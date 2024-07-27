@@ -57,8 +57,8 @@ public class ChatLogic {
 		ChatLog[] listChats = new ChatLog[listChat.size()];
 		for (int i=0; i<listChat.size(); i++) {
 			ChatLog chatLog = new ChatLogResponse().new ChatLog();
-			chatLog.setUser_id(listChat.get(i).getUserId());
-			chatLog.setChat_date(listChat.get(i).getChatDate());
+			chatLog.setUser_id(listChat.get(i).getUser_id());
+			chatLog.setChat_date(listChat.get(i).getChat_date());
 			chatLog.setComment(listChat.get(i).getComment());
 			listChats[i] = chatLog;
 		}
@@ -67,8 +67,8 @@ public class ChatLogic {
 	
 	public void setChatLog(int chatGroupId, int userId, String message) {
 		TChatLog tChatLog = new TChatLog();
-		tChatLog.setChatGroupId(chatGroupId);
-		tChatLog.setUserId(userId);
+		tChatLog.setChat_group_id(chatGroupId);
+		tChatLog.setUser_id(userId);
 		tChatLog.setComment(message);
 		chatLogMapper.insert(tChatLog);
 	}

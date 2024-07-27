@@ -18,17 +18,17 @@ public class TFriend implements Serializable {
 	private static final long serialVersionUID = 1L;
 
     @Column(name="USER_ID")
-	private int userId;
+	private int user_id;
 
     @Column(name="FRIEND_USER_ID")
-	private int friendUserId;
+	private int friend_user_id;
     
     @Column(name="REGIST_DATE")
-	private Date registDate;
+	private Date regist_date;
 
     @Column(name="DELETE_FLG")
-	private String deleteFlg;
+	private String delete_flg;
 
     @Column(name="TIME_STAMP")
-	private Date timeStamp;
+	private Date time_stamp;
 }

@@ -10,8 +10,8 @@
 	<insert id="insert">
 		insert into T_FRIEND (USER_ID, FRIEND_USER_ID)
 		values(
-			 #{form.user_id}
-			,#{form.friend_user_id}
+			 #{user_id}
+			,#{friend_user_id}
 		)
 	</insert>
 </mapper>

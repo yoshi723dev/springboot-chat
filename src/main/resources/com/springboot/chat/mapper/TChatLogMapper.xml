@@ -11,9 +11,9 @@
 	<insert id="insert">
 		insert into T_CHAT_LOG (CHAT_GROUP_ID, USER_ID, COMMENT)
 		values(
-			 #{form.chat_group_id}
-			,#{form.user_id}
-			,#{form.comment}
+			 #{chat_group_id}
+			,#{user_id}
+			,#{comment}
 		)
 	</insert>
 </mapper>

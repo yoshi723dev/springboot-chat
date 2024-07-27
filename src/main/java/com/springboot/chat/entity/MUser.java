@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 import org.springframework.stereotype.Component;
 
@@ -17,18 +18,19 @@ public class MUser implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-    @Column(name="USER_ID")
-	private int userId;
+	@Id
+	@Column(name="USER_ID")
+	private int user_id;
 
     @Column(name="USER_NM")
-	private String userNm;
+	private String user_nm;
 
     @Column(name="PASSWORD")
 	private String password;
 
     @Column(name="REGIST_DATE")
-	private Date registDate;
+	private Date regist_date;
 
     @Column(name="TIME_STAMP")
-	private Date timeStamp;
+	private Date time_stamp;
 }

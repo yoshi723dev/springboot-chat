@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.springboot.chat.mapper.TChatGroupMapper">
-    <select id="findChatGroup" resultType="_int">
+    <select id="find" resultType="com.springboot.chat.entity.TChatGroup">
 		select
-			a.CHAT_GROUP_ID
-		from T_CHAT_GROUP a
-		inner join T_CHAT_GROUP b
-		on a.CHAT_GROUP_ID = b.CHAT_GROUP_ID
-		where a.USER_ID = #{user_id}
-		and b.USER_ID = #{friend_user_id}
+			*
+		from T_CHAT_GROUP
+		where CHAT_GROUP_ID = #{chat_group_id}
+	</select>
+    <select id="findUserId" resultType="com.springboot.chat.entity.TChatGroup">
+		select
+			*
+		from T_CHAT_GROUP
+		where CHAT_GROUP_ID = #{chat_group_id}
+		  and USER_ID = #{user_id}
 	</select>
     <select id="findMax" resultType="_int">
 		select
@@ -18,8 +22,8 @@
 	<insert id="insert">
 		insert into T_CHAT_GROUP (CHAT_GROUP_ID, USER_ID)
 		values(
-		    #{form.chat_group_id}
-		   ,#{form.user_id}
+		    #{chat_group_id}
+		   ,#{user_id}
 		)
 	</insert>
 </mapper>

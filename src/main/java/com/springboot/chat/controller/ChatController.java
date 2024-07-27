@@ -32,7 +32,7 @@ public class ChatController {
 		MUser mUser = (MUser) session.getAttribute("user");
 		
 		// 画面から受け取ったchatgroupidが存在するか、存在しない場合新規採番
-		int newChatGroupId = chatLogic.checkChatGroupId(request.getChatGroupId(), mUser.getUserId(), request.getFrendUserIds());
+		int newChatGroupId = chatLogic.checkChatGroupId(request.getChatGroupId(), mUser.getUser_id(), request.getFrendUserIds());
 		
 		// チャットログ取得
 		ChatLog[] aryChats = chatLogic.getChatLog(newChatGroupId);
@@ -44,13 +44,15 @@ public class ChatController {
 	}
 	
 	@PostMapping( path="/regist_chatlog", produces = MediaType.APPLICATION_JSON_VALUE)
-	public void registChatLog(@RequestBody RegistChatLogRequest request) {
+	public String registChatLog(@RequestBody RegistChatLogRequest request) {
 		// セッションからユーザ情報を取得
 		MUser mUser = (MUser) session.getAttribute("user");
 		
 		// 画面から受け取ったchatgroupidが存在するか、存在しない場合新規採番
-		int newChatGroupId = chatLogic.checkChatGroupId(request.getChatGroupId(), mUser.getUserId(), null);
+		int newChatGroupId = chatLogic.checkChatGroupId(request.getChatGroupId(), mUser.getUser_id(), null);
 		
-		chatLogic.setChatLog(newChatGroupId, mUser.getUserId(), request.getMessage());
+		chatLogic.setChatLog(newChatGroupId, mUser.getUser_id(), request.getMessage());
+		
+		return "OK";
 	}
 }

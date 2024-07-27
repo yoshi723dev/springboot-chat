@@ -12,6 +12,6 @@ public interface TFriendMapper {
 
 	List<TFriend> find(@Param("user_id") int user_id);
 
-	int insert(TFriend tFrend);
+	int insert(TFriend tFriend);
 
 }
