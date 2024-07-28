@@ -64,7 +64,7 @@ public class ChatController {
 		}
 		
 		// 画面から受け取ったchatgroupidが存在するか、存在しない場合新規採番
-		int newChatGroupId = chatLogic.checkChatGroupId(request.getChatGroupId(), mUser.getUser_id(), request.getFriendUserIds());
+		int newChatGroupId = chatLogic.checkChatGroupIdNottingCreate(request.getChatGroupId(), mUser.getUser_id(), request.getFriendUserIds());
 		
 		// チャットログ取得
 		ChatLog[] aryChats = chatLogic.getChatLog(newChatGroupId, mUser.getUser_id());
@@ -84,7 +84,7 @@ public class ChatController {
 		}
 		
 		// 画面から受け取ったchatgroupidが存在するか、存在しない場合新規採番
-		int newChatGroupId = chatLogic.checkChatGroupId(request.getChatGroupId(), mUser.getUser_id(), null);
+		int newChatGroupId = chatLogic.checkChatGroupIdNottingCreate(request.getChatGroupId(), mUser.getUser_id(), null);
 		
 		chatLogic.setChatLog(newChatGroupId, mUser.getUser_id(), request.getMessage());
 		

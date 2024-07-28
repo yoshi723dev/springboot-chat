@@ -15,6 +15,7 @@ import com.springboot.chat.controller.model.LoginRequest;
 import com.springboot.chat.controller.model.RegistFriendRequest;
 import com.springboot.chat.entity.MUser;
 import com.springboot.chat.entity.TFriend;
+import com.springboot.chat.logic.ChatLogic;
 import com.springboot.chat.logic.UserLogic;
 import com.springboot.chat.mapper.MUserMapper;
 import com.springboot.chat.mapper.TFriendMapper;
@@ -36,6 +37,9 @@ public class UserController {
 	
 	@Autowired
 	private UserLogic userLogic;
+	
+	@Autowired
+	private ChatLogic chatLogic;
 	
 	@PostMapping( path="/login")
 	public String login(@RequestBody LoginRequest request) throws Exception {
@@ -64,9 +68,12 @@ public class UserController {
 		Friends[] listFriends = new Friends[tFriend.size()];
 		for (int i=0; i<tFriend.size(); i++) {
 			Friends friends = response.new Friends();
-			MUser user = userMapper.find(tFriend.get(i).getFriend_user_id());
-			friends.setUserId(user.getUser_id());
-			friends.setUserNm(user.getUser_nm());
+			MUser friend = userMapper.find(tFriend.get(i).getFriend_user_id());
+			int chatGroupId = chatLogic.getChatGroupIdForFriend(mUser.getUser_id(), friend.getUser_id());
+			
+			friends.setUserId(friend.getUser_id());
+			friends.setUserNm(friend.getUser_nm());
+			friends.setChatGroupId(chatGroupId);
 			listFriends[i] = friends;
 		}
 		response.setFriends(listFriends);

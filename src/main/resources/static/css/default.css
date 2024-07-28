@@ -1,0 +1,25 @@
+@charset "UTF-8";
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+  width: 100%;
+  background-color: #007bff;
+  color: #fff;
+  margin: 0 auto;
+  font-weight: bold;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.chathome + p {
+  width: 100%;
+  margin: 0 auto;
+  cursor: pointer;
+}

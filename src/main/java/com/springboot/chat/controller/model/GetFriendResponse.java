@@ -14,6 +14,9 @@ public class GetFriendResponse extends AbstractResponse {
 
 	@Data
 	public class Friends {
+		@JsonProperty("chat_group_id") 
+		private int chatGroupId;
+		
 		@JsonProperty("user_id")
 		private int userId;
 		

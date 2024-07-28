@@ -42,12 +42,27 @@ document.addEventListener("DOMContentLoaded", function() {
 					window.location.href = "error.html";
 				}
 		        // 受け取ったデータをHTMLリストに表示
-		        const friendList = document.getElementById("friendlist");
 		        $.each(response.friends, function(key, value) {
-					const liItem = document.createElement("li");
-		            liItem.textContent = `${value.user_nm}`;
-		            friendList.appendChild(liItem);
-				})
+					var pDetail = $('<p>')
+						.attr('id', 'chat_' + `${value.chat_group_id}`)
+						.attr('class', 'chathome')
+						.text(`${value.user_nm}`);
+					$('#friendlist').append(pDetail);
+		            var formData = {
+	            		chat_group_id: `${value.chat_group_id}`,
+	            		friend_user_ids: `${value.user_id}`
+	        		};
+	        		// JSON形式に変換
+	        		var jsonData = JSON.stringify(formData);
+		            var hiddenInput = $('<input>')
+		                .attr('type', 'hidden')
+		                .attr('name', 'chat_' + `${value.chat_group_id}` + '_value')
+		                .attr('id', 'chat_' + `${value.chat_group_id}` + '_value')
+		                .attr('value', `${jsonData}`);
+		            
+		            // Append the hidden input to the form
+		            $('#friendlist').append(hiddenInput);
+		    	})
             },
             error: function(xhr, status, error) {
                 alert('ajax error: ' + error);
@@ -72,6 +87,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		        $.each(response.list_chat_group, function(key, value) {
 					var pDetail = $('<p>')
 						.attr('id', 'chat_' + `${value.chat_group_id}`)
+						.attr('class', 'chathome')
 						.text(`${value.chat_name}`);
 					$('#chatlist').append(pDetail);
 		            var formData = {
@@ -107,9 +123,6 @@ document.addEventListener("DOMContentLoaded", function() {
 	        contentType: 'application/json',
 	        data: data,
 	        success: function(response) {
-				if (response.status != 200) {
-					window.location.href = "error.html";
-				}
 	            window.location.href = response;
 	        },
 	        error: function(xhr, status, error) {
