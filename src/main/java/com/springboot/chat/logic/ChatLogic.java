@@ -89,12 +89,16 @@ public class ChatLogic {
 		return newChatGroupId;
 	}
 	
-	public ChatLog[] getChatLog(int chatGroupId) {
+	public ChatLog[] getChatLog(int chatGroupId, int myUserId) {
 		List<TChatLog> listChat = chatLogMapper.findOrder(chatGroupId);
 		ChatLog[] listChats = new ChatLog[listChat.size()];
 		for (int i=0; i<listChat.size(); i++) {
 			ChatLog chatLog = new ChatLogResponse().new ChatLog();
-			chatLog.setUser_id(listChat.get(i).getUser_id());
+			int myMessage = 0;
+			if (myUserId == listChat.get(i).getUser_id()) {
+				myMessage = 1;
+			}
+			chatLog.setMy_message(myMessage);
 			chatLog.setChat_date(listChat.get(i).getChat_date());
 			chatLog.setComment(listChat.get(i).getComment());
 			listChats[i] = chatLog;

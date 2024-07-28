@@ -1,24 +1,19 @@
 package com.springboot.chat.handler;
 
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.ErrorResponseException;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.springboot.chat.controller.model.ErrorResponse;
+import com.springboot.chat.controller.model.CommonErrorResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-    @Override
-    @ExceptionHandler({Exception.class})
-	protected ResponseEntity<Object> handleErrorResponseException(
-			ErrorResponseException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-        // リクエストのBodyのセット
-        ErrorResponse response = new ErrorResponse(ex.getStatusCode().value(), ex.getMessage());
-		return handleExceptionInternal(ex, response, headers, status, request);
-	}
+	// もう少し細かくException設計が必要
+	@ExceptionHandler(Exception.class)
+    public final CommonErrorResponse handleAllExceptions(Exception ex, WebRequest request) {
+        CommonErrorResponse response = new CommonErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage());
+        return response;
+    }
 }

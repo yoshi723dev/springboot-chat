@@ -30,9 +30,12 @@ public class ChatController {
 	private ChatLogic chatLogic;
 	
 	@GetMapping(path="/get_chatgrouplist")
-	public GetChatGroupResponse getChatGroupList() {
+	public GetChatGroupResponse getChatGroupList() throws Exception {
 		// セッションからユーザ情報を取得
 		MUser mUser = (MUser) session.getAttribute("user");
+		if (mUser == null) {
+			throw new Exception("no session");
+		}
 		
 		// 画面から受け取ったchatgroupidが存在するか、存在しない場合新規採番
 		ChatGroup[] aryChatGroup = chatLogic.getChatGroupList(mUser.getUser_id());
@@ -54,32 +57,31 @@ public class ChatController {
 	public ChatLogResponse getChatLog() throws Exception {
 		// セッションからユーザ情報を取得
 		MUser mUser = (MUser) session.getAttribute("user");
-		
 		// セッションから値を取得
-		if (session.getAttribute("chatinfo") == null) {
+		GetChatLogRequest request = (GetChatLogRequest) session.getAttribute("chatinfo");
+		if (request == null || mUser == null) {
 			throw new Exception("no session");
 		}
-		GetChatLogRequest request = (GetChatLogRequest) session.getAttribute("chatinfo");
 		
 		// 画面から受け取ったchatgroupidが存在するか、存在しない場合新規採番
 		int newChatGroupId = chatLogic.checkChatGroupId(request.getChatGroupId(), mUser.getUser_id(), request.getFriendUserIds());
 		
 		// チャットログ取得
-		ChatLog[] aryChats = chatLogic.getChatLog(newChatGroupId);
+		ChatLog[] aryChats = chatLogic.getChatLog(newChatGroupId, mUser.getUser_id());
 		ChatLogResponse response = new ChatLogResponse();
 		response.setChatGroupId(newChatGroupId);
 		response.setChatLog(aryChats);
-		
-		// セッションクリア
-		session.removeAttribute("chatinfo");
 		
 		return response;
 	}
 	
 	@PostMapping(path="/regist_chatlog")
-	public RegistChatLogResponse registChatLog(@RequestBody RegistChatLogRequest request) {
+	public RegistChatLogResponse registChatLog(@RequestBody RegistChatLogRequest request) throws Exception {
 		// セッションからユーザ情報を取得
 		MUser mUser = (MUser) session.getAttribute("user");
+		if (mUser == null) {
+			throw new Exception("no session");
+		}
 		
 		// 画面から受け取ったchatgroupidが存在するか、存在しない場合新規採番
 		int newChatGroupId = chatLogic.checkChatGroupId(request.getChatGroupId(), mUser.getUser_id(), null);

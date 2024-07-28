@@ -38,25 +38,26 @@ public class UserController {
 	private UserLogic userLogic;
 	
 	@PostMapping( path="/login")
-	public String login(@RequestBody LoginRequest request) {
+	public String login(@RequestBody LoginRequest request) throws Exception {
 		// 一度セッションを削除する
 		session.removeAttribute("user");
 		
 		MUser mUser = userMapper.find(request.getUserId());
-		if (mUser == null) {
-			return "NG";
+		if (mUser == null || !mUser.getPassword().equals(request.getPassword())) {
+			throw new Exception("login error");
 		}
-		if (mUser.getPassword().equals(request.getPassword())) {
-			session.setAttribute("user", mUser);
-			return "OK";
-		}
-		return "NG";
+		
+		session.setAttribute("user", mUser);
+		return "OK";
 	}
 	
 	@GetMapping(path="/get_friend")
-	public GetFriendResponse getFriendList() {
+	public GetFriendResponse getFriendList() throws Exception {
 		// セッションからユーザ情報を取得
 		MUser mUser = (MUser) session.getAttribute("user");
+		if (mUser == null) {
+			throw new Exception("no session");
+		}
 		
 		List<TFriend> tFriend = friendMapper.find(mUser.getUser_id());
 		GetFriendResponse response = new GetFriendResponse();
@@ -73,9 +74,12 @@ public class UserController {
 	}
 	
 	@PostMapping(path="/regist_friend")
-	public String registFriend(@RequestBody RegistFriendRequest request) {
+	public String registFriend(@RequestBody RegistFriendRequest request) throws Exception {
 		// セッションからユーザ情報を取得
 		MUser mUser = (MUser) session.getAttribute("user");
+		if (mUser == null) {
+			throw new Exception("no session");
+		}
 		
 		try {
 			userLogic.registFriend(mUser.getUser_id(), request.getFriendIds());

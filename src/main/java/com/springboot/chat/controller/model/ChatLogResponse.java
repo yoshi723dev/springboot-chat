@@ -19,8 +19,8 @@ public class ChatLogResponse extends AbstractResponse {
 
 	@Data
 	public class ChatLog {
-		@JsonProperty("user_id")
-		private int user_id;
+		@JsonProperty("my_message")
+		private int my_message;
 		
 		@JsonProperty("chat_date")
 		private Date chat_date;

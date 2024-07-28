@@ -17,6 +17,9 @@ document.addEventListener("DOMContentLoaded", function() {
             contentType: 'application/json',
             data: jsonData,
             success: function(response) {
+				if (response.status != 200) {
+					window.location.href = "error.html";
+				}
                 window.location.href = "home.html";
             },
             error: function(xhr, status, error) {
@@ -163,14 +166,16 @@ document.addEventListener("DOMContentLoaded", function() {
 		            .attr('name', 'chat_group_id')
 		            .attr('id', 'chat_group_id')
 		            .attr('value', response.chat_group_id);
-		        // Append the hidden input to the form
 		        $('#chatloglist').append(hiddenChatGroupId);
 				
 		        // 受け取ったデータをHTMLリストに表示
 		        $.each(response.chatLog, function(key, value) {
-					var pDetail = $('<p>')
-						.text(`${value.comment}`);
-					$('#chatloglist').append(pDetail);
+					var styleDiv = $('<div>').css('align', 'right');
+					if (`${value.my_message}` == 1) {
+						styleDiv = $('<div>').css('align', 'left');
+					}
+					var pDetail = $('<p>').text(`${value.comment}`);
+					$('#chatloglist').append(styleDiv).append(pDetail);
 				})
             },
             error: function(xhr, status, error) {

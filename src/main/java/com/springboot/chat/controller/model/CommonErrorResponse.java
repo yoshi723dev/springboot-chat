@@ -5,14 +5,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class ErrorResponse {
+public class CommonErrorResponse {
 	@JsonProperty("status")
 	private int status;
 
 	@JsonProperty("message")
 	private String 	message;
 	
-	public ErrorResponse(int status, String message) {
+	public CommonErrorResponse(int status, String message) {
 		this.status = status;
 		this.message = message;
 	}

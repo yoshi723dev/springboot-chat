@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" href="css/login.css" />
 <meta charset="UTF-8">
 <title>ログイン画面</title>
 </head>
 <body>
-	
+<div class="login-container">
 <form id="login">
-  <div>
-    <label>ユーザーID:</label>
+  <div class="form-group">
+    <label>ユーザーID</label>
     <input type="text" id="user_id" name="user_id" required>
   </div>
-  <div>
-    <label>パスワード:</label>
+  <div class="form-group">
+    <label>パスワード</label>
     <input type="password" id="password" name="password" required>
   </div>
   <div>
     <button type="submit">ログイン</button>
   </div>
 </form>
-
+</div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="js/main.js"></script>
 
