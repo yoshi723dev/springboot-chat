@@ -201,7 +201,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		        $.each(response.chatLog, function(key, value) {
 					var chatClass = 'yourchat';
 					var infoClass = 'yourinfochat';
-					var infoUser =  `${value.user_nm}` + "発言";
+					var infoUser =  `${value.user_nm}`;
 					if (`${value.my_message}` == 1) {
 						chatClass = 'mychat';
 						infoClass = 'myinfochat';
