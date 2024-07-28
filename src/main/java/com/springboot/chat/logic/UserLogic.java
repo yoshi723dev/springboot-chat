@@ -17,6 +17,12 @@ public class UserLogic {
 	@Autowired
 	private TFriendMapper friendMapper;
 	
+	/**
+	 * 友達登録.(手が回らず未使用)
+	 * 
+	 * @param userId
+	 * @param friendUserIds
+	 */
 	@Transactional
 	public void registFriend(int userId, int[] friendUserIds) {
 		try {

@@ -16,6 +16,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	@Autowired
 	private HttpSession session;
 	
+	/**
+	 * Exceptionがthrowされた場合のエラーレスポンス返却.
+	 * 
+	 * @param ex
+	 * @param request
+	 * @return
+	 */
 	// もう少し細かくException設計が必要
 	@ExceptionHandler(Exception.class)
     public final CommonErrorResponse handleAllExceptions(Exception ex, WebRequest request) {

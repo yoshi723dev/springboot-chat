@@ -1,16 +1,19 @@
 package com.springboot.chat.logic;
 
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.springboot.chat.controller.model.ChatLogResponse;
-import com.springboot.chat.controller.model.ChatLogResponse.ChatLog;
 import com.springboot.chat.controller.model.GetChatGroupResponse;
 import com.springboot.chat.controller.model.GetChatGroupResponse.ChatGroup;
+import com.springboot.chat.controller.model.GetChatLogResponse;
+import com.springboot.chat.controller.model.GetChatLogResponse.ChatLog;
 import com.springboot.chat.entity.MUser;
 import com.springboot.chat.entity.TChatGroup;
 import com.springboot.chat.entity.TChatLog;
@@ -44,6 +47,7 @@ public class ChatLogic {
 				String chatName = "";
 				String delimiter = "";
 				List<TChatGroup> listTChatGroupByGroupId = chatGroupMapper.find(listChatGroupByUserId.get(i).getChat_group_id());
+				// 自分を含まないため、チャット参加者-1
 				int[] friendIds = new int[listTChatGroupByGroupId.size()-1];
 				int friendCnt = 0;
 				for (int z=0; z<listTChatGroupByGroupId.size(); z++) {
@@ -86,16 +90,17 @@ public class ChatLogic {
 			List<TChatGroup> listTChatGroup = chatGroupMapper.find(chatGroupId);
 			// ない場合、新規のチャット
 			if (listTChatGroup == null || listTChatGroup.size() == 0) {
-				// ユーザのchatgroupを登録
+				// チャット情報が何もない場合は1、それ以外は最大値+1
 				newChatGroupId = chatGroupMapper.findMax();
 				if (newChatGroupId == 0) {
 					newChatGroupId = 1;
 				} else {
 					newChatGroupId++;
 				}
+				// ユーザのchatgroupを登録
 				chatGroupMapper.insert(newChatGroupId, userId);
 			}
-			// friendUserIdが指定されている場合、他社のレコードも登録する
+			// friendUserIdが指定されている場合、友達のレコードも登録する
 			if (friendUserIds != null) {
 				int[] intFriendUserIds = Stream.of(friendUserIds.split(",")).mapToInt(Integer::parseInt).toArray();
 				for (int i=0; i<intFriendUserIds.length; i++) {
@@ -147,14 +152,22 @@ public class ChatLogic {
 	public ChatLog[] getChatLog(int chatGroupId, int myUserId) {
 		List<TChatLog> listChat = chatLogMapper.findOrder(chatGroupId);
 		ChatLog[] listChats = new ChatLog[listChat.size()];
+		Map<Integer, String> mapUser = new HashMap<>();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		for (int i=0; i<listChat.size(); i++) {
-			ChatLog chatLog = new ChatLogResponse().new ChatLog();
+			ChatLog chatLog = new GetChatLogResponse().new ChatLog();
 			int myMessage = 0;
 			if (myUserId == listChat.get(i).getUser_id()) {
 				myMessage = 1;
 			}
+			if (! mapUser.containsKey(listChat.get(i).getUser_id())) {
+				MUser mUser = mUserMapper.find(listChat.get(i).getUser_id());
+				mapUser.put(mUser.getUser_id(), mUser.getUser_nm());
+			}
+	        String strDate = formatter.format(listChat.get(i).getChat_date());
 			chatLog.setMy_message(myMessage);
-			chatLog.setChat_date(listChat.get(i).getChat_date());
+			chatLog.setUser_nm(mapUser.get(listChat.get(i).getUser_id()));
+			chatLog.setChat_date(strDate);
 			chatLog.setComment(listChat.get(i).getComment());
 			listChats[i] = chatLog;
 		}

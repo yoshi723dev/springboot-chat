@@ -18,8 +18,40 @@ label {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.chathome + p {
+.chathome {
   width: 100%;
   margin: 0 auto;
   cursor: pointer;
+}
+
+.mychat {
+  background-color: rgb(128, 255, 128);
+  width: 100%;
+  text-align: left;
+  padding: 1px;
+  margin: 1 auto;
+}
+
+.yourchat {
+  background-color: rgb(128, 255, 255);
+  width: 100%;
+  text-align: right;
+  padding: 1px;
+  margin: 1 auto;
+}
+
+.myinfochat {
+  font-size: 8px;
+  width: 100%;
+  width:fit-content;
+  text-align: left;
+  
+}
+
+.yourinfochat {
+  font-size: 8px;
+  width: 100%;
+  width:fit-content;
+  text-align: right;
+
 }

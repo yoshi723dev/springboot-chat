@@ -3,6 +3,8 @@ package com.springboot.chat.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,11 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.springboot.chat.controller.model.GetFriendResponse;
 import com.springboot.chat.controller.model.GetFriendResponse.Friends;
 import com.springboot.chat.controller.model.LoginRequest;
-import com.springboot.chat.controller.model.RegistFriendRequest;
+import com.springboot.chat.controller.model.LoginResponse;
 import com.springboot.chat.entity.MUser;
 import com.springboot.chat.entity.TFriend;
 import com.springboot.chat.logic.ChatLogic;
-import com.springboot.chat.logic.UserLogic;
 import com.springboot.chat.mapper.MUserMapper;
 import com.springboot.chat.mapper.TFriendMapper;
 
@@ -36,32 +37,46 @@ public class UserController {
 	private MUserMapper userMapper;
 	
 	@Autowired
-	private UserLogic userLogic;
-	
-	@Autowired
 	private ChatLogic chatLogic;
 	
+	/**
+	 * ログイン.
+	 * 
+	 * @param request
+	 * @param result
+	 * @return
+	 * @throws Exception
+	 */
 	@PostMapping( path="/login")
-	public String login(@RequestBody LoginRequest request) throws Exception {
+	public LoginResponse login(@RequestBody @Validated LoginRequest request, BindingResult result) throws Exception {
+		if (result.hasErrors()) {
+			throw new Exception("input error");
+		}
 		// 一度セッションを削除する
 		session.removeAttribute("user");
 		
 		MUser mUser = userMapper.find(request.getUserId());
+		// パスワードが生情報なので設計変更
 		if (mUser == null || !mUser.getPassword().equals(request.getPassword())) {
 			throw new Exception("login error");
 		}
 		
 		session.setAttribute("user", mUser);
-		return "OK";
+		return new LoginResponse();
 	}
 	
+	/**
+	 * 友達情報を返す.
+	 * 
+	 * @param request
+	 * @param result
+	 * @return
+	 * @throws Exception
+	 */
 	@GetMapping(path="/get_friend")
 	public GetFriendResponse getFriendList() throws Exception {
 		// セッションからユーザ情報を取得
 		MUser mUser = (MUser) session.getAttribute("user");
-		if (mUser == null) {
-			throw new Exception("no session");
-		}
 		
 		List<TFriend> tFriend = friendMapper.find(mUser.getUser_id());
 		GetFriendResponse response = new GetFriendResponse();
@@ -79,25 +94,4 @@ public class UserController {
 		response.setFriends(listFriends);
 		return response;
 	}
-	
-	@PostMapping(path="/regist_friend")
-	public String registFriend(@RequestBody RegistFriendRequest request) throws Exception {
-		// セッションからユーザ情報を取得
-		MUser mUser = (MUser) session.getAttribute("user");
-		if (mUser == null) {
-			throw new Exception("no session");
-		}
-		
-		try {
-			userLogic.registFriend(mUser.getUser_id(), request.getFriendIds());
-			return "OK";
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			return "NG";
-		}
-	}
-	
-	
-	//deleteFriend
-	//registUser
 }

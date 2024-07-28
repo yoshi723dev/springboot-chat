@@ -1,14 +1,16 @@
 package com.springboot.chat.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.springboot.chat.controller.model.ChatLogResponse;
-import com.springboot.chat.controller.model.ChatLogResponse.ChatLog;
+import com.springboot.chat.controller.model.GetChatLogResponse;
+import com.springboot.chat.controller.model.GetChatLogResponse.ChatLog;
 import com.springboot.chat.controller.model.GetChatGroupResponse;
 import com.springboot.chat.controller.model.GetChatGroupResponse.ChatGroup;
 import com.springboot.chat.controller.model.GetChatLogRequest;
@@ -29,13 +31,16 @@ public class ChatController {
 	@Autowired
 	private ChatLogic chatLogic;
 	
+	/**
+	 * ユーザのチャットグループ一覧を返す.
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
 	@GetMapping(path="/get_chatgrouplist")
 	public GetChatGroupResponse getChatGroupList() throws Exception {
 		// セッションからユーザ情報を取得
 		MUser mUser = (MUser) session.getAttribute("user");
-		if (mUser == null) {
-			throw new Exception("no session");
-		}
 		
 		// 画面から受け取ったchatgroupidが存在するか、存在しない場合新規採番
 		ChatGroup[] aryChatGroup = chatLogic.getChatGroupList(mUser.getUser_id());
@@ -45,6 +50,12 @@ public class ChatController {
 		return response;
 	}
 	
+	/**
+	 * チャット情報を受け取り、チャット画面へ遷移する.
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
 	@PostMapping(path="/redirect_chat")
 	public String redirectChat(@RequestBody GetChatLogRequest request) {
 		// セッションにリクエスト情報退避
@@ -53,35 +64,49 @@ public class ChatController {
 		return "chat.html";
 	}
 	
+	/**
+	 * チャットの情報を返す.
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
 	@GetMapping(path="/get_chatlog")
-	public ChatLogResponse getChatLog() throws Exception {
+	public GetChatLogResponse getChatLog() throws Exception {
 		// セッションからユーザ情報を取得
 		MUser mUser = (MUser) session.getAttribute("user");
 		// セッションから値を取得
 		GetChatLogRequest request = (GetChatLogRequest) session.getAttribute("chatinfo");
-		if (request == null || mUser == null) {
+		if (request == null) {
 			throw new Exception("no session");
 		}
 		
 		// 画面から受け取ったchatgroupidが存在するか、存在しない場合新規採番
-		int newChatGroupId = chatLogic.checkChatGroupIdNottingCreate(request.getChatGroupId(), mUser.getUser_id(), request.getFriendUserIds());
+		int newChatGroupId = chatLogic.checkChatGroupIdNottingCreate(
+				request.getChatGroupId(), mUser.getUser_id(), request.getFriendUserIds());
 		
 		// チャットログ取得
 		ChatLog[] aryChats = chatLogic.getChatLog(newChatGroupId, mUser.getUser_id());
-		ChatLogResponse response = new ChatLogResponse();
+		GetChatLogResponse response = new GetChatLogResponse();
 		response.setChatGroupId(newChatGroupId);
 		response.setChatLog(aryChats);
 		
 		return response;
 	}
 	
+	/**
+	 * チャットの発言を登録する.
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
 	@PostMapping(path="/regist_chatlog")
-	public RegistChatLogResponse registChatLog(@RequestBody RegistChatLogRequest request) throws Exception {
+	public RegistChatLogResponse registChatLog(
+			@RequestBody @Validated RegistChatLogRequest request, BindingResult result) throws Exception {
+		if (result.hasErrors()) {
+			throw new Exception("input error");
+		}
 		// セッションからユーザ情報を取得
 		MUser mUser = (MUser) session.getAttribute("user");
-		if (mUser == null) {
-			throw new Exception("no session");
-		}
 		
 		// 画面から受け取ったchatgroupidが存在するか、存在しない場合新規採番
 		int newChatGroupId = chatLogic.checkChatGroupIdNottingCreate(request.getChatGroupId(), mUser.getUser_id(), null);

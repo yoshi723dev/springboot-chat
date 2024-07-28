@@ -18,7 +18,8 @@ document.addEventListener("DOMContentLoaded", function() {
             data: jsonData,
             success: function(response) {
 				if (response.status != 200) {
-					window.location.href = "error.html";
+					alert("ログインエラーです");
+					return;
 				}
                 window.location.href = "home.html";
             },
@@ -118,7 +119,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		var clickId = $(this).attr('id');
 		var data = $('#' + `${clickId}` + "_value").val();
 	    $.ajax({
-	        url: 'http://localhost:8080/chat/redirect_chat',
+	        url: '/chat/redirect_chat',
 	        method: 'POST',
 	        contentType: 'application/json',
 	        data: data,
@@ -134,6 +135,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
 document.addEventListener("DOMContentLoaded", function() {
 	$(document).on('click', '#sendMessage', function() {
+		if ($('#message').val() == "") {
+			return;
+		}
         var data = {
             message: $('#message').val(),
             chat_group_id: $('#chat_group_id').val()
@@ -142,7 +146,7 @@ document.addEventListener("DOMContentLoaded", function() {
         var jsonData = JSON.stringify(data);
 
 	    $.ajax({
-	        url: 'http://localhost:8080/chat/regist_chatlog',
+	        url: '/chat/regist_chatlog',
 	        method: 'POST',
 	        contentType: 'application/json',
 	        data: jsonData,
@@ -150,8 +154,20 @@ document.addEventListener("DOMContentLoaded", function() {
 				if (response.status != 200) {
 					window.location.href = "error.html";
 				}
+				var date = new Date();
+				date.setTime(date.getTime() - date.getTimezoneOffset() * 60 * 1000);
+				var str_date = date.toISOString().replace('T', ' ').substring(0,19);
+				var chatClass = 'mychat';
+				var infoClass = 'myinfochat';
 				var message = $('#message').val();
-				$('#chatloglist').append(message);
+		        var pInfo = $('<p>')
+		            .attr('class', infoClass)
+		            .text(str_date);
+		        var pDetail = $('<p>')
+		          	.attr('class', chatClass)
+		            .text(message);
+				$('#chatloglist').append(pInfo);
+				$('#chatloglist').append(pDetail);
 				$('#message').val("");
 	        },
 	        error: function(xhr, status, error) {
@@ -183,12 +199,22 @@ document.addEventListener("DOMContentLoaded", function() {
 				
 		        // 受け取ったデータをHTMLリストに表示
 		        $.each(response.chatLog, function(key, value) {
-					var styleDiv = $('<div>').css('align', 'right');
+					var chatClass = 'yourchat';
+					var infoClass = 'yourinfochat';
+					var infoUser =  `${value.user_nm}` + "発言";
 					if (`${value.my_message}` == 1) {
-						styleDiv = $('<div>').css('align', 'left');
+						chatClass = 'mychat';
+						infoClass = 'myinfochat';
+						infoUser = '';
 					}
-					var pDetail = $('<p>').text(`${value.comment}`);
-					$('#chatloglist').append(styleDiv).append(pDetail);
+		            var pInfo = $('<p>')
+		            	.attr('class', infoClass)
+		                .text(`${value.chat_date}` + "　" + infoUser);
+		            var pDetail = $('<p>')
+		            	.attr('class', chatClass)
+		                .text(`${value.comment}`);
+					$('#chatloglist').append(pInfo);
+					$('#chatloglist').append(pDetail);
 				})
             },
             error: function(xhr, status, error) {

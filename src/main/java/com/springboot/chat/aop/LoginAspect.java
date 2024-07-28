@@ -15,6 +15,12 @@ public class LoginAspect {
 	@Autowired
 	private HttpSession session;
 	
+	/**
+	 * ログイン後のセッション情報を各コントローラでチェックする.
+	 * 
+	 * @param joinPoint
+	 * @throws Exception
+	 */
 	//execution(戻り値の型 パッケージ名.クラス名.関数名(引数))
     @Before("execution(* com.springboot.chat.controller.*.*(..))")
     public void beforeMethod(JoinPoint joinPoint) throws Exception {
