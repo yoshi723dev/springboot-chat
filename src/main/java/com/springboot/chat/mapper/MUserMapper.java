@@ -10,6 +10,6 @@ public interface MUserMapper {
 
     MUser find(@Param("user_id") int userId);
 
-	int insert(MUser mUser);
+    int insert(MUser mUser);
 
 }

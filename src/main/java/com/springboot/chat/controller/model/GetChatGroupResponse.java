@@ -9,18 +9,18 @@ import lombok.ToString;
 @ToString
 public class GetChatGroupResponse extends AbstractResponse {
 
-	@JsonProperty("list_chat_group") 
-	private ChatGroup[] listChatGroup;
-	
-	@Data
-	public class ChatGroup {
-		@JsonProperty("chat_group_id") 
-		private int chatGroupId;
-		
-		@JsonProperty("chat_name") 
-		private String chatName;
-		
-		@JsonProperty("friend_user_ids") 
-		private int[] friend_user_ids;
-	}
+    @JsonProperty("list_chat_group") 
+    private ChatGroup[] listChatGroup;
+    
+    @Data
+    public class ChatGroup {
+        @JsonProperty("chat_group_id") 
+        private int chatGroupId;
+        
+        @JsonProperty("chat_name") 
+        private String chatName;
+        
+        @JsonProperty("friend_user_ids") 
+        private int[] friend_user_ids;
+    }
 }

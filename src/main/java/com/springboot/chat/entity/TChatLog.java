@@ -16,25 +16,25 @@ import lombok.Data;
 @Component
 public class TChatLog implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
+    @Id
     @Column(name="CHAT_GROUP_ID")
-	private int chat_group_id;
-	
-	@Id
+    private int chat_group_id;
+    
+    @Id
     @Column(name="CHAT_DATE")
-	private Date chat_date;
+    private Date chat_date;
 
     @Column(name="USER_ID")
-	private int user_id;
+    private int user_id;
 
     @Column(name="COMMENT")
-	private String comment;
+    private String comment;
 
     @Column(name="DELETE_FLG")
-	private String delete_flg;
+    private String delete_flg;
 
     @Column(name="TIME_STAMP")
-	private Date time_stamp;
+    private Date time_stamp;
 }

@@ -16,21 +16,21 @@ import lombok.Data;
 @Component
 public class MUser implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column(name="USER_ID")
-	private int user_id;
+    @Id
+    @Column(name="USER_ID")
+    private int user_id;
 
     @Column(name="USER_NM")
-	private String user_nm;
+    private String user_nm;
 
     @Column(name="PASSWORD")
-	private String password;
+    private String password;
 
     @Column(name="REGIST_DATE")
-	private Date regist_date;
+    private Date regist_date;
 
     @Column(name="TIME_STAMP")
-	private Date time_stamp;
+    private Date time_stamp;
 }

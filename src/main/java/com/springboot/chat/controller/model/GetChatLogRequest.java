@@ -9,9 +9,9 @@ import lombok.ToString;
 @ToString
 public class GetChatLogRequest {
 
-	@JsonProperty("chat_group_id") 
-	private int chatGroupId;
+    @JsonProperty("chat_group_id") 
+    private int chatGroupId;
 
-	@JsonProperty("friend_user_ids") 
-	private String friendUserIds;
+    @JsonProperty("friend_user_ids") 
+    private String friendUserIds;
 }

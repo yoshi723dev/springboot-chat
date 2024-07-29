@@ -10,8 +10,8 @@ import com.springboot.chat.entity.TFriend;
 @Mapper
 public interface TFriendMapper {
 
-	List<TFriend> find(@Param("user_id") int user_id);
+    List<TFriend> find(@Param("user_id") int user_id);
 
-	int insert(TFriend tFriend);
+    int insert(TFriend tFriend);
 
 }

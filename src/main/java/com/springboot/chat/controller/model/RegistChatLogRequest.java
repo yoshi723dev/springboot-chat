@@ -10,11 +10,11 @@ import lombok.ToString;
 @Data
 @ToString
 public class RegistChatLogRequest {
-	@NotNull(message = "チャットグループIDがありません。")
-	@JsonProperty("chat_group_id") 
-	private int chatGroupId;
-	
-	@NotEmpty(message = "メッセージがありません。")
-	@JsonProperty("message") 
-	private String message;
+    @NotNull(message = "チャットグループIDがありません。")
+    @JsonProperty("chat_group_id") 
+    private int chatGroupId;
+    
+    @NotEmpty(message = "メッセージがありません。")
+    @JsonProperty("message") 
+    private String message;
 }

@@ -12,6 +12,6 @@ public interface TChatLogMapper {
 
     List<TChatLog> findOrder(@Param("chat_group_id") int chat_group_id);
 
-	int insert(TChatLog tChatLog);
+    int insert(TChatLog tChatLog);
 
 }

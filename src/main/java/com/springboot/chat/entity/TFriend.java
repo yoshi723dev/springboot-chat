@@ -15,20 +15,20 @@ import lombok.Data;
 @Component
 public class TFriend implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     @Column(name="USER_ID")
-	private int user_id;
+    private int user_id;
 
     @Column(name="FRIEND_USER_ID")
-	private int friend_user_id;
+    private int friend_user_id;
     
     @Column(name="REGIST_DATE")
-	private Date regist_date;
+    private Date regist_date;
 
     @Column(name="DELETE_FLG")
-	private String delete_flg;
+    private String delete_flg;
 
     @Column(name="TIME_STAMP")
-	private Date time_stamp;
+    private Date time_stamp;
 }
