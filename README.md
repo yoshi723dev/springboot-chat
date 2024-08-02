@@ -8,5 +8,5 @@ websocket使用していないので、リアルタイムで会話はできま�
   
 static配下にhtmlを配置し、html + ajax + apiで動作します。  
 http://localhost:8080/login.html  
-user: 1  
+email: test1@test.com 
 password: test  
