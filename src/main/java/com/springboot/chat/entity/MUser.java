@@ -24,6 +24,9 @@ public class MUser implements Serializable {
 
     @Column(name="USER_NM")
     private String user_nm;
+    
+    @Column(name="EMAIL")
+    private String email;
 
     @Column(name="PASSWORD")
     private String password;

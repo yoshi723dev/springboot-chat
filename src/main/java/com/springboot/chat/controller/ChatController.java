@@ -1,5 +1,7 @@
 package com.springboot.chat.controller;
 
+import java.net.URISyntaxException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -9,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.springboot.chat.controller.model.GetChatLogResponse;
-import com.springboot.chat.controller.model.GetChatLogResponse.ChatLog;
 import com.springboot.chat.controller.model.GetChatGroupResponse;
 import com.springboot.chat.controller.model.GetChatGroupResponse.ChatGroup;
 import com.springboot.chat.controller.model.GetChatLogRequest;
+import com.springboot.chat.controller.model.GetChatLogResponse;
+import com.springboot.chat.controller.model.GetChatLogResponse.ChatLog;
 import com.springboot.chat.controller.model.RegistChatLogRequest;
 import com.springboot.chat.controller.model.RegistChatLogResponse;
 import com.springboot.chat.entity.MUser;
@@ -54,14 +56,18 @@ public class ChatController {
      * チャット情報を受け取り、チャット画面へ遷移する.
      * 
      * @return
+     * @throws URISyntaxException 
      * @throws Exception
      */
     @PostMapping(path="/redirect_chat")
-    public String redirectChat(@RequestBody GetChatLogRequest request) {
+    public String redirectChat(@RequestBody GetChatLogRequest request) throws URISyntaxException {
         // セッションにリクエスト情報退避
         session.setAttribute("chatinfo", request);
-
-        return "chat.html";
+        
+        //効かない
+        //return "redirect:http://localhost:8080/chat.html";
+        //Response response = Response.seeOther(new URI("/chat.html")).build();
+        return "/chat.html";
     }
     
     /**

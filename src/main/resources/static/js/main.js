@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function() {
         event.preventDefault(); // フォームのデフォルト送信を防ぐ
 
         var formData = {
-            user_id: $('#user_id').val(),
+            email: $('#email').val(),
             password: $('#password').val()
         };
 

@@ -10,9 +10,9 @@ import lombok.ToString;
 @Data
 @ToString
 public class LoginRequest {
-    @NotNull(message = "ユーザIDは必須入力です。")
-    @JsonProperty("user_id") 
-    private int userId;
+    @NotNull(message = "メールアドレスは必須入力です。")
+    @JsonProperty("email") 
+    private String email;
 
     @NotEmpty(message = "パスワードは必須入力です。")
     @JsonProperty("password") 

@@ -55,7 +55,7 @@ public class UserController {
         // 一度セッションを削除する
         session.removeAttribute("user");
         
-        MUser mUser = userMapper.find(request.getUserId());
+        MUser mUser = userMapper.findEmail(request.getEmail());
         // パスワードが生情報なので設計変更
         if (mUser == null || !mUser.getPassword().equals(request.getPassword())) {
             throw new Exception("login error");
